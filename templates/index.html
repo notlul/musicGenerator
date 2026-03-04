@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beat Generator</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <form onsubmit="return false;">
+        <label for="key">key </label> <input type="text" id="key"> <br>
+        <label for="mode">mode </label> <select name="mode" id="mode">
+            <option value="maj">maj</option>
+            <option value="min">min</option>
+        </select><br>
+        <label for="nChord">number of chords </label><input type="number" id="nChord"><br>
+        <button onclick="generateProg()">Generate</button>
+    </form>
+    
+    <script src="http://unpkg.com/tone"></script>
+    <script>
+        
+        function generateProg(){
+            const key = document.getElementById("key").value
+            const mode = document.getElementById("mode").value
+            const nChord = document.getElementById("nChord").value
+
+            $.ajax({
+                url: `/generate/${key}/${mode}/${nChord}`,
+                type: "GET",
+                success: function(prog){
+                    console.log(prog)
+                    playProg(prog)
+                }
+
+            })
+        }
+        function playProg(prog){
+            // TODO: Play the chords
+        }
+    </script>
+</body>
+</html>
