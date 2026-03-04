@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import random
 app = Flask(__name__)
 
@@ -10,13 +10,11 @@ def index():
 @app.route("/generate/<key>/<mode>/<int:nChords>", methods=["GET"])
 def generate(key, mode, nChords):
     cProg=generate_progression(key,mode,nChords)
-    return cProg
+    return jsonify(cProg)
 
 
 #Hvala chatgpt
-import random
-
-def generate_progression_with_notes(key, mode, num_chords):
+def generate_progression(key, mode, num_chords):
     notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     
     # Intervals for the scales

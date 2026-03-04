@@ -19,24 +19,32 @@
     
     <script src="http://unpkg.com/tone"></script>
     <script>
-        
-        function generateProg(){
-            const key = document.getElementById("key").value
-            const mode = document.getElementById("mode").value
-            const nChord = document.getElementById("nChord").value
+        const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
+        function generateProg() {
+            const key = document.getElementById("key").value;
+            const mode = document.getElementById("mode").value;
+            const nChord = document.getElementById("nChord").value;
+
+            if (!key || !nChord) return alert("Vnesi podatke prosm");
             $.ajax({
                 url: `/generate/${key}/${mode}/${nChord}`,
                 type: "GET",
-                success: function(prog){
-                    console.log(prog)
-                    playProg(prog)
+                success: function(prog) {
+                    console.log("prog:", prog);
+                    playProg(prog);
                 }
-
-            })
+            });
         }
-        function playProg(prog){
-            // TODO: Play the chords
+        async function playProg(prog) {
+            await Tone.start();
+            
+            const now = Tone.now(); 
+            
+            prog.forEach((chordObj, index) => {
+                const notesToPlay = chordObj.notes.map(note => note + "4");
+                synth.triggerAttackRelease(notesToPlay, "2n", now + (index * 1.5));
+            });
         }
     </script>
 </body>
